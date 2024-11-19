@@ -1,12 +1,16 @@
-import math
+from flask import render_template, request
 
-from flask import Flask, render_template
+import dao
+from app import app
 
-app = Flask(__name__)
 
 @app.route("/")
+
 def index():
-    return render_template('index.html')
+    cates = dao.load_categories()
+    kw = request.args.get('kw')
+    prods = dao.load_products(kw)
+    return render_template('index.html', categories = cates, products = prods)
 
 if __name__ == '__main__':
     app.run(debug=True)
